@@ -170,6 +170,7 @@ public class DraweeView<DH extends DraweeHierarchy> extends ImageView {
   @Override
   @Deprecated
   public void setImageURI(Uri uri) {
+
     mDraweeHolder.setController(null);
     super.setImageURI(uri);
   }
