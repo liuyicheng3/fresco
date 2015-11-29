@@ -157,7 +157,7 @@ def makeNdkTasks(String name, Object[] deps) {
     task "ndk_build_$name"(dependsOn: deps, type: Exec) {
         inputs.file("src/main/jni/$name")
         outputs.dir("$buildDir/$name")
-        commandLine 'D:\\codeTools\\android-ndk-r10e\\ndk-build.cmd',
+        commandLine getNdkBuildFullPath(),
             'NDK_PROJECT_PATH=null',
             'NDK_APPLICATION_MK=../Application.mk',
             'NDK_OUT=' + temporaryDir,
@@ -168,7 +168,7 @@ def makeNdkTasks(String name, Object[] deps) {
 
     task "ndk_clean_$name"(type: Exec) {
         ignoreExitValue true
-        commandLine 'D:\\codeTools\\android-ndk-r10e\\ndk-build.cmd',
+        commandLine getNdkBuildFullPath(),
             'NDK_PROJECT_PATH=null',
             'NDK_APPLICATION_MK=../Application.mk',
             'NDK_OUT=' + temporaryDir,
@@ -192,7 +192,7 @@ android {
         ['memchunk', []],
         ['webpimage', [copyLibwebp]]]
 
-    buildToolsVersion "21.1.2"
+    buildToolsVersion "20.0.0"
     compileSdkVersion 21
     sourceSets {
         main {
