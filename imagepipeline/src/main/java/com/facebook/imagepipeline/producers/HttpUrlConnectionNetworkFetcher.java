@@ -41,6 +41,12 @@ public class HttpUrlConnectionNetworkFetcher extends BaseNetworkFetcher<FetchSta
     return new FetchState(consumer, context);
   }
 
+  /**
+   * 渐进式图片展示是在NetworkFetchProducer里面做的
+   * @param fetchState the fetch-specific state
+   * @param callback the callback used to inform the network fetch producer
+   */
+
   @Override
   public void fetch(final FetchState fetchState, final Callback callback) {
     final Future<?> future = mExecutorService.submit(
@@ -62,6 +68,7 @@ public class HttpUrlConnectionNetworkFetcher extends BaseNetworkFetcher<FetchSta
                 nextScheme = (nextUriString == null) ? null : Uri.parse(nextUriString).getScheme();
                 if (nextUriString == null || nextScheme.equals(scheme)) {
                   is = connection.getInputStream();
+                  //在这里告诉 开始去数据
                   callback.onResponse(is, -1);
                   break;
                 }

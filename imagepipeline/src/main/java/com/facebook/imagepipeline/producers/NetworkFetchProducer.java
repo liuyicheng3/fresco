@@ -83,13 +83,14 @@ public class NetworkFetchProducer implements Producer<EncodedImage> {
           }
         });
   }
-
+//这里传过来的是一个流不断的  读数据
   private void onResponse(
       FetchState fetchState,
       InputStream responseData,
       int responseContentLength)
       throws IOException {
     final PooledByteBufferOutputStream pooledOutputStream;
+    //mPooledByteBufferFactory 里面就是那些NDk的东西了  我就没有理解这个地方
     if (responseContentLength > 0) {
       pooledOutputStream = mPooledByteBufferFactory.newOutputStream(responseContentLength);
     } else {
@@ -132,6 +133,12 @@ public class NetworkFetchProducer implements Producer<EncodedImage> {
       return 1 - (float) Math.exp(-downloaded / 5e4);
     }
   }
+
+  /**
+   * 两次获取数据间隔超过100ms即会通知Consumer更新一次数据
+   * @param pooledOutputStream
+   * @param fetchState
+   */
 
   private void maybeHandleIntermediateResult(
       PooledByteBufferOutputStream pooledOutputStream,
