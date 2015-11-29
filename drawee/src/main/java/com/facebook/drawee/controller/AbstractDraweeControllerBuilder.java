@@ -239,8 +239,8 @@ public abstract class AbstractDraweeControllerBuilder <
   /** Validates the parameters before building a controller. */
   protected void validate() {
     Preconditions.checkState(
-        (mMultiImageRequests == null) || (mImageRequest == null),
-        "Cannot specify both ImageRequest and FirstAvailableImageRequests!");
+            (mMultiImageRequests == null) || (mImageRequest == null),
+            "Cannot specify both ImageRequest and FirstAvailableImageRequests!");
     Preconditions.checkState(
         (mDataSourceSupplier == null) ||
             (mMultiImageRequests == null && mImageRequest == null && mLowResImageRequest == null),
@@ -277,6 +277,18 @@ public abstract class AbstractDraweeControllerBuilder <
 
     // increasing-quality supplier; highest-quality supplier goes first
     if (supplier != null && mLowResImageRequest != null) {
+      //一个清晰度逐渐提高的DataSource（默认只有两级清晰度）
+
+      //使用方法
+      /**
+       * Uri lowResUri, highResUri;
+       DraweeController controller = Fresco.newDraweeControllerBuilder()
+       .setLowResImageRequest(ImageRequest.fromUri(lowResUri))
+       .setImageRequest(ImageRequest.fromUri(highResUri))
+       .setOldController(mSimpleDraweeView.getController())
+       .build();
+       mSimpleDraweeView.setController(controller);
+       */
       List<Supplier<DataSource<IMAGE>>> suppliers = new ArrayList<>(2);
       suppliers.add(supplier);
       suppliers.add(getDataSourceSupplierForRequest(mLowResImageRequest));

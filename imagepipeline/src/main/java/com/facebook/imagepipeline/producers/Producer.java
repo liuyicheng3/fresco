@@ -30,5 +30,7 @@ public interface Producer<T> {
    * @param context
    *
    */
+
+  //在当前producer中执行的是 上一个producer的的consumer (为了获得满足条件才把cusumer放进来)
   void produceResults(Consumer<T> consumer, ProducerContext context);
 }
