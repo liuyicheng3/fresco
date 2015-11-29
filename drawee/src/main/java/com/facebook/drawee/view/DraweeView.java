@@ -39,7 +39,7 @@ import com.facebook.drawee.interfaces.DraweeController;
  * ImageView's methods and properties (T5856175).
  */
 public class DraweeView<DH extends DraweeHierarchy> extends ImageView {
-
+//mDraweeHolder  是连接DraweeHierarchy和 controller的载体  在里面设置时候也会给controller 设置载体
   private DraweeHolder<DH> mDraweeHolder;
 
   public DraweeView(Context context) {
@@ -61,7 +61,9 @@ public class DraweeView<DH extends DraweeHierarchy> extends ImageView {
     mDraweeHolder = DraweeHolder.create(null, context);
   }
 
-  /** Sets the hierarchy. */
+  /** Sets the hierarchy.   在这里才是把drawable塞给imageView显示，但是这个drawable 不是普通的drawable  是GenericDraweeHierarchy  FadeDrawable  中的当前 现实drawable
+   * fresco不是操作imgevie替换vie 而是操作drawable的叠加显示效果来替换view
+   * */
   public void setHierarchy(DH hierarchy) {
     mDraweeHolder.setHierarchy(hierarchy);
     super.setImageDrawable(mDraweeHolder.getTopLevelDrawable());

@@ -87,6 +87,8 @@ import static com.facebook.drawee.drawable.ScalingUtils.ScaleType;
  * are always displayed.
  * - Instance of some drawable should be used by only one DH. If more than one DH is being built
  * with the same builder, different drawable instances must be specified for each DH.
+ *  DraweeView  操作imageView显示的载体    为draweeHolder持有 可以采用默认设置（inflateHierarchy（）  GenericDraweeHierarchyBuilder） 也可以手动设置
+ *
  */
 public class GenericDraweeHierarchy implements SettableDraweeHierarchy {
 
@@ -159,7 +161,7 @@ public class GenericDraweeHierarchy implements SettableDraweeHierarchy {
 
     int numLayers = 0;
 
-    // backgrounds
+    // backgrounds  根据是否传入背景图层来判断图层数是否增减
     int numBackgrounds = (builder.getBackgrounds() != null) ? builder.getBackgrounds().size() : 0;
     int backgroundsIndex = numLayers;
     numLayers += numBackgrounds;
@@ -178,7 +180,7 @@ public class GenericDraweeHierarchy implements SettableDraweeHierarchy {
         builder.getPlaceholderImageScaleType());
     mPlaceholderImageIndex = numLayers++;
 
-    // actual image branch
+    // actual image branch 现实目标涂层     SettableDrawable
     Drawable actualImageBranch = null;
     mActualImageSettableDrawable = new SettableDrawable(mEmptyActualImageDrawable);
     actualImageBranch = mActualImageSettableDrawable;
@@ -274,7 +276,7 @@ public class GenericDraweeHierarchy implements SettableDraweeHierarchy {
       layers[mControllerOverlayIndex] = mEmptyControllerOverlayDrawable;
     }
 
-    // fade drawable composed of branches
+    // fade drawable composed of branches  初始化 drawable层
     mFadeDrawable = new FadeDrawable(layers);
     mFadeDrawable.setTransitionDuration(builder.getFadeDuration());
 

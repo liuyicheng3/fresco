@@ -168,7 +168,7 @@ public class FadeDrawable extends ArrayDrawable {
 
   /**
    * Starts fading out the specified layer.
-   * @param index the index of the layer to fade out.
+   * @param index the index of the layer to fade out.`
    */
   public void fadeOutLayer(int index) {
     mTransitionState = TRANSITION_STARTING;
