@@ -331,6 +331,7 @@ public class DecodeProducer implements Producer<CloseableReference<CloseableImag
         if (!mProgressiveJpegParser.parseMoreData(encodedImage)) {
           return false;
         }
+        //渐近式图片展示逻辑
         int scanNum = mProgressiveJpegParser.getBestScanNumber();
         if (scanNum <= mLastScheduledScanNumber ||
             scanNum < mProgressiveJpegConfig.getNextScanNumberToDecode(
