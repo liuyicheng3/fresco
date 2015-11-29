@@ -292,6 +292,7 @@ public abstract class AbstractDraweeControllerBuilder <
       List<Supplier<DataSource<IMAGE>>> suppliers = new ArrayList<>(2);
       suppliers.add(supplier);
       suppliers.add(getDataSourceSupplierForRequest(mLowResImageRequest));
+      //渐进式图片展示本质上是两张图片
       supplier = IncreasingQualityDataSourceSupplier.create(suppliers);
     }
 
