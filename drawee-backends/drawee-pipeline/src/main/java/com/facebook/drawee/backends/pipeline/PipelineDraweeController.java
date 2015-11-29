@@ -94,7 +94,7 @@ public class PipelineDraweeController
     if (FLog.isLoggable(FLog.VERBOSE)) {
       FLog.v(TAG, "controller %x: getDataSource", System.identityHashCode(this));
     }
-      // 这个mDataSourceSupplier是在Controller初始化的时候塞进来的   实际调用的是AbstractDraweeControllerBuilder的obtain获取的这个upplier<DataSource<IMAGE>>   归根结底 是最后走到ImagePipeline的getDataSourceSupplier
+      // 这个mDataSourceSupplier是在Controller初始化的时候塞进来的   实际调用的是AbstractDraweeControllerBuilder的obtain获取的这个supplier<DataSource<IMAGE>>   归根结底 是最后走到ImagePipeline的getDataSourceSupplier
     return mDataSourceSupplier.get();
   }
 

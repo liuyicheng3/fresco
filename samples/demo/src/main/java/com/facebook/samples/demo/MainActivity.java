@@ -46,7 +46,6 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
 
 
-      //fresco  ≥ı ºªØ
     FLog.setMinimumLoggingLevel(FLog.VERBOSE);
     Set<RequestListener> listeners = new HashSet<>();
     listeners.add(new RequestLoggingListener());

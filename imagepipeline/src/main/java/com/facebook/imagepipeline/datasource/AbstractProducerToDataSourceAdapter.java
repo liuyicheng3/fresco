@@ -42,7 +42,6 @@ public abstract class AbstractProducerToDataSourceAdapter<T> extends AbstractDat
         mSettableProducerContext.getCallerContext(),
         mSettableProducerContext.getId(),
         mSettableProducerContext.isPrefetch());
-      //����ŵ�һ�δ�������
     producer.produceResults(createConsumer(), settableProducerContext);
   }
 
