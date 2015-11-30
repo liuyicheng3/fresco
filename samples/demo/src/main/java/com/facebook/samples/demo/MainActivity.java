@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 
 
 
-        mBaselineJpegView.setImageURI(Uri.parse("https://www.gstatic.com/webp/gallery/1.sm.jpg"));
+        mBaselineJpegView.setImageURI(Uri.parse("http://p18.qhimg.com/t0144d6a0802f22be4f.jpg"));
 
         Uri uri = Uri.parse("http://pooyak.com/p/progjpeg/jpegload.cgi?o=1");
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 
         DraweeController animatedGifController = Fresco.newDraweeControllerBuilder()
                 .setAutoPlayAnimations(true)
-                .setUri(Uri.parse("https://s3.amazonaws.com/giphygifs/media/4aBQ9oNjgEQ2k/giphy.gif"))
+                .setUri(Uri.parse("http://static.abc001.sdo.com/web_3_0/chwm/2012/08/14/0809288ms4hsj71fzzh119.gif"))
                 .build();
         mAnimatedGifView.setController(animatedGifController);
 
