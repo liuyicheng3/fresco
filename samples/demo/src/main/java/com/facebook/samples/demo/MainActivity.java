@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -32,82 +33,55 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 public class MainActivity extends Activity {
 
-  private ImageView mBaselineJpegView;
-  private SimpleDraweeView mProgressiveJpegView;
-  private SimpleDraweeView mStaticWebpView;
-  private SimpleDraweeView mAlphaWebpView;
-  private SimpleDraweeView mAnimatedGifView;
-  private SimpleDraweeView mAnimatedWebpView;
-  private SimpleDraweeView mOneLoopAnimatedWebpView;
-  private SimpleDraweeView mDataWebpView;
+    private ImageView mBaselineJpegView;
+    private SimpleDraweeView mProgressiveJpegView;
+    private SimpleDraweeView mAnimatedGifView;
+    private SimpleDraweeView data_mult;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+        Set<RequestListener> listeners = new HashSet<>();
+        listeners.add(new RequestLoggingListener());
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setRequestListeners(listeners)
+                .build();
+        Fresco.initialize(this, config);
+        setContentView(R.layout.activity_main);
+
+        mBaselineJpegView = (SimpleDraweeView) findViewById(R.id.baseline_jpeg);
+        mProgressiveJpegView = (SimpleDraweeView) findViewById(R.id.progressive_jpeg);
+
+        mAnimatedGifView = (SimpleDraweeView) findViewById(R.id.animated_gif);
+        data_mult = (SimpleDraweeView) findViewById(R.id.data_mult);
 
 
-    FLog.setMinimumLoggingLevel(FLog.VERBOSE);
-    Set<RequestListener> listeners = new HashSet<>();
-    listeners.add(new RequestLoggingListener());
-    ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
-        .setRequestListeners(listeners)
-        .build();
-    Fresco.initialize(this, config);
+
+        mBaselineJpegView.setImageURI(Uri.parse("https://www.gstatic.com/webp/gallery/1.sm.jpg"));
+
+        Uri uri = Uri.parse("http://pooyak.com/p/progjpeg/jpegload.cgi?o=1");
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+                .setProgressiveRenderingEnabled(true)
+                .build();
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .build();
+        mProgressiveJpegView.setController(controller);
+
+        DraweeController animatedGifController = Fresco.newDraweeControllerBuilder()
+                .setAutoPlayAnimations(true)
+                .setUri(Uri.parse("https://s3.amazonaws.com/giphygifs/media/4aBQ9oNjgEQ2k/giphy.gif"))
+                .build();
+        mAnimatedGifView.setController(animatedGifController);
+
+        DraweeController mult_controller = Fresco.newDraweeControllerBuilder()
+                .setLowResImageRequest(ImageRequest.fromUri(Uri.parse("http://img.zwbk.org/baike/spic/2010/11/12/20101112104515812_2816.jpg")))
+                .setImageRequest(ImageRequest.fromUri(Uri.parse("http://h.hiphotos.baidu.com/zhidao/pic/item/e61190ef76c6a7efd1e9f66bfffaaf51f2de66ab.jpg")))
+                .build();
+        data_mult.setController(mult_controller);
 
 
-    setContentView(R.layout.activity_main);
-
-    mBaselineJpegView = (SimpleDraweeView) findViewById(R.id.baseline_jpeg);
-    mProgressiveJpegView = (SimpleDraweeView) findViewById(R.id.progressive_jpeg);
-    mStaticWebpView = (SimpleDraweeView) findViewById(R.id.static_webp);
-    mAlphaWebpView = (SimpleDraweeView) findViewById(R.id.alpha_webp);
-    mAnimatedGifView = (SimpleDraweeView) findViewById(R.id.animated_gif);
-    mAnimatedWebpView = (SimpleDraweeView) findViewById(R.id.animated_webp);
-    mOneLoopAnimatedWebpView = (SimpleDraweeView) findViewById(R.id.one_loop_animated_webp);
-    mDataWebpView = (SimpleDraweeView) findViewById(R.id.data_webp);
-    mBaselineJpegView.setImageURI(Uri.parse("http://s.cn.bing.net/th?id=OSA.HkGj0gBKNmnukg&w=520&h=260&c=8&rs=1&pid=SatAns"));
-
-   /* Uri uri = Uri.parse("http://pooyak.com/p/progjpeg/jpegload.cgi?o=1");
-    ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
-        .setProgressiveRenderingEnabled(true)
-        .build();
-    DraweeController controller = Fresco.newDraweeControllerBuilder()
-        .setImageRequest(request)
-        .build();
-    mProgressiveJpegView.setController(controller);
-
-    mStaticWebpView.setImageURI(Uri.parse("https://www.gstatic.com/webp/gallery/2.sm.webp"));
-
-    mAlphaWebpView.setImageURI(Uri.parse("http://frescolib.org/static/translucent.webp"));
-
-    DraweeController animatedGifController = Fresco.newDraweeControllerBuilder()
-        .setAutoPlayAnimations(true)
-        .setUri(Uri.parse("https://s3.amazonaws.com/giphygifs/media/4aBQ9oNjgEQ2k/giphy.gif"))
-        .build();
-    mAnimatedGifView.setController(animatedGifController);
-
-    DraweeController animatedWebpController = Fresco.newDraweeControllerBuilder()
-        .setAutoPlayAnimations(true)
-        .setUri(Uri.parse("https://www.gstatic.com/webp/animated/1.webp"))
-        .build();
-    mAnimatedWebpView.setController(animatedWebpController);
-
-    DraweeController oneLoopWebpController = Fresco.newDraweeControllerBuilder()
-        .setAutoPlayAnimations(true)
-        .setUri(Uri.parse("https://dl.dropboxusercontent.com/u/6610969/webp_180_example.webp"))
-        .build();
-    mOneLoopAnimatedWebpView.setController(oneLoopWebpController);
-
-    mDataWebpView.setImageURI(Uri.parse("data:image/webp;base64," +
-        "UklGRjgCAABXRUJQVlA4WAoAAAAQAAAAFwAAFwAAQUxQSC0AAAABJ6AgbQNm1+EkTnRExDkWahpJgRIk" +
-        "oOCVgAKy/mVdSxvR/wyEHWJ49xCbCAcAVlA4IOQBAACQCgCdASoYABgAPlEkjkWjoiEUBAA4BQS2AE6Z" +
-        "Qjgbyv8ZuWF3B3ANsBdoHoAeWj+s3wleTHcua7PMAYrNOLPHFqAbpKGWe8x3KqHen7YXTMnmq/c9GqBt" +
-        "ZtuQ0AAA/r031iZbkliICmd/QSg0OjEWbX/nv8v+g4UDPpobcehywI6oypX8hbuzcQndgaVt0zW5DiZP" +
-        "6Ueo/21IPqsuRm1WyZHL3bJIFStwH8BOWif7xVniUiHwD5HwW8AXIZiq2maDmyIvxn4a0fetR+flTrt/" +
-        "5/Vq3BVTeorYBHMN7L09DE9xDW/2+dj45/mCe9vjNUGRpT5EJhV8jDz/ZxPixLvN9Tl5iPD/neh1RCl6" +
-        "AOcx3JudnAseXqvm8dEtF+rA40Bg881EW88XwU1oXf/5RY/4ToF9NwcXPLC/AodLaAFPpiXt+C6cFDIj" +
-        "+uqi12PWFO+p7jn1P+sjCpbP/OBdHIoez8Rp6nslBEiFG19LKqv6dkGzLKtvt9dRIpz2sef2JFUVB+v+" +
-        "hvMMmQ4o6d8aMTGuv/4wZxogl/n/k3g83NO3bBnf7/TL8Baf97pQw43+FVR0hXfpvD0k51yE35e2jNF/" +
-        "98Uv3fAfPXw0T8irZQR4r1/ktG5xrypg/aKDooBtoI5aQAAA"));*/
-  }
+    }
 }
