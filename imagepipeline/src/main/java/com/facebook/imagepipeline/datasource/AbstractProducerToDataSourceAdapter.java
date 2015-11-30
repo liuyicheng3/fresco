@@ -70,7 +70,10 @@ public abstract class AbstractProducerToDataSourceAdapter<T> extends AbstractDat
   }
 
   protected void onNewResultImpl(@Nullable T result, boolean isLast) {
-    if (super.setResult(result, isLast)) {
+      //这里设置setResult的时候有可能会通知subscriber  最终会通知到AbstractDraweeController
+      //    的mDataSource.subscribe(dataSubscriber, mUiThreadImmediateExecutor);
+
+      if (super.setResult(result, isLast)) {
       if (isLast) {
         mRequestListener.onRequestSuccess(
             mSettableProducerContext.getImageRequest(),
