@@ -12,6 +12,7 @@
 
 package com.facebook.samples.demo;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,8 +20,10 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.ImageView;
 
+import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
@@ -45,8 +48,22 @@ public class MainActivity extends Activity {
         FLog.setMinimumLoggingLevel(FLog.VERBOSE);
         Set<RequestListener> listeners = new HashSet<>();
         listeners.add(new RequestLoggingListener());
+
+        //设置cache路径
+        /**
+         * setSmallImageDiskCacheConfig
+         * ImageRequest request = ImageRequest.newBuilderWithSourceUri(uri)
+         .setImageType(ImageType.SMALL)
+         不设置的话fresco 默认使用一个cache
+         */
+        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder()
+                .setBaseDirectoryName("fresco_cache")
+                .setBaseDirectoryPath(new File(Environment.getExternalStorageDirectory().getPath()))
+                .build();
+
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
                 .setRequestListeners(listeners)
+                .setMainDiskCacheConfig(diskCacheConfig)
                 .build();
         Fresco.initialize(this, config);
         setContentView(R.layout.activity_main);
