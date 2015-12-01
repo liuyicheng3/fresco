@@ -43,6 +43,7 @@ import com.facebook.common.util.SecureHashUtil;
  */
 @ThreadSafe
 public class DiskStorageCache implements FileCache, DiskTrimmable {
+  //默认cache在/data/data/<application package>/cache/image_cache 路径  设置是在 ImagePipelineConfig中的getDefaultMainDiskCacheConfig
 
   private static final Class<?> TAG = DiskStorageCache.class;
 
