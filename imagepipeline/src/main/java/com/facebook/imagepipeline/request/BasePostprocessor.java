@@ -22,6 +22,9 @@ import com.facebook.imagepipeline.nativecode.Bitmaps;
  * Base implementation of {@link Postprocessor} interface.
  *
  * <p> Clients should override exactly one of the three provided {@link #process} methods.
+ * http://wiki.jikexueyuan.com/project/fresco/modifying-image.html
+ * 从服务器下载，或者本地的图片做些修改，比如在某个坐标统一加个网格什么的。这时使用后处理器(Postprocessor)便可达到目的。
+ * 处理的图片是一个完整的图片拷贝  原图 不收影响
  */
 public abstract class BasePostprocessor implements Postprocessor {
 
